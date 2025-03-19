@@ -10,9 +10,25 @@ import (
 )
 
 type PokeAPIResponse struct {
-	Height    int  `json:"height"`
-	ID        int  `json:"id"`
-	IsDefault bool `json:"is_default"`
+	Height         int              `json:"height"`
+	Weight         int              `json:"weight"`
+	ID             int              `json:"id"`
+	IsDefault      bool             `json:"is_default"`
+	BaseExperience int              `json:"base_experience"`
+	Name           string           `json:"name"`
+	Order          int              `json:"order"`
+	Abilities      []PokeAPIAbility `json:"abilities"`
+}
+
+type PokeAPIAbility struct {
+	Ability  PokemonAbility `json:"ability"`
+	IsHideen bool           `json:"is_hidden"`
+	Slot     int            `json:"int"`
+}
+
+type PokemonAbility struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
 }
 
 func main() {
@@ -50,10 +66,13 @@ func get_pokemon(pokemon string) {
 		return
 	}
 	fmt.Println("Information on " + pokemon + " retrieved successfully from the PokeAPI.")
-	fmt.Println("Weight: " + strconv.Itoa(pokemonReponse.Height))
-	fmt.Println("ID: " + strconv.Itoa(pokemonReponse.ID))
-	var isDefaultString string = fmt.Sprintf("%t", pokemonReponse.IsDefault)
+}
+func printPokemon(pokeAPIReponse PokeAPIResponse) {
+	fmt.Println("Weight: " + strconv.Itoa(pokeAPIReponse.Height))
+	fmt.Println("ID: " + strconv.Itoa(pokeAPIReponse.ID))
+	var isDefaultString string = fmt.Sprintf("%t", pokeAPIReponse.IsDefault)
 	fmt.Println("OG: " + isDefaultString)
+	fmt.Println(pokeAPIReponse.Abilities[0].Ability.Name)
 }
 
 // https://pkg.go.dev/net/http
